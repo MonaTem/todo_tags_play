@@ -9,13 +9,6 @@ const knex = require("../db");
   http --json \
     GET 'http://localhost:8000/todos'
 */
-/*
-app.get("/", (req, res) => {
-  findTodos(req).then(todos => res.json(todos));
-});
-*/
-
-
 app.get("/", (req, res) => {
   findTodos(req).then(todos => {
     res.format({
@@ -29,7 +22,10 @@ app.get("/new", (req, res) => {
   res.render('todos/new');
 });
 
-
+/*
+  http --json \
+    GET 'http://localhost:8000/todos/1'
+*/
 app.get("/:id", (req, res) => {
   findTodo(req).then(todos => {
     const todo = todos[0];
@@ -40,43 +36,12 @@ app.get("/:id", (req, res) => {
     })
   });
 });
-/*
 
-app.get("/new", (req, res) => {
-});
-
-*/
-/*
-
-app.get("/new", (req, res) => {
-  res.render('todos/new');
-});
-*/
-/*
-app.get("/new", (req, res) => {
-  res.render('todos/new');
-});
-*/
-/*
-  http --json \
-    GET 'http://localhost:8000/todos/1'
-*/
-/*
-app.get("/:id", (req, res) => {
-  findTodo(req).then(todos => res.json(todos[0]));
-});
-*/
 /*
   http --json \
     POST 'http://localhost:8000/todos' \
     title='A Short Title' description='A short description.'
 */
-/*
-app.post("/", (req, res) => {
-  createTodo(req).then(todos => res.json(todos[0]));
-});
-*/
-
 app.post("/", (req, res) => {
   createTodo(req).then(todos =>{
     const todo = todos[0];
@@ -104,8 +69,6 @@ app.patch("/:id", (req, res) => {
 app.delete("/:id", (req, res) => {
   destroyTodo(req).then(() => res.sendStatus(204));
 });
-
-/********** HELPER FUNCTIONS ************/
 
 // CREATE A todo
 function createTodo({ body: { title, description } }) {
