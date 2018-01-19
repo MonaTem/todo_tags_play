@@ -20,7 +20,9 @@ app.use(bodyParser.json());
 // Add routes
 app.use('/', site);
 app.use('/plans', plans); // <--- Added
-app.use('/todos', todos);
+app.use('/plans/:plan_id/todos', todos);
+
+// app.use('/todos', todos);
 
 app.listen(PORT, () => {
   console.log('Server listening on ', PORT);

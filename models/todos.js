@@ -1,11 +1,20 @@
 const knex = require("../db");
 
 // CREATE A todo
+/*
 function createTodo({ body: { title, description } }) {
   return knex("todos")
     .returning("*")
     .insert({ title, description });
 }
+*/
+// CREATE A todo
+function createTodo({params: { plan_id }, body: { title, description } }) {
+  return knex("todos")
+    .returning("*")
+    .insert({ title, description, plan_id });
+}
+
 
 // Find all
 function findTodos() {

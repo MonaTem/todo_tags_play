@@ -1,7 +1,8 @@
 /*
   RESTful todos
 */
-const app = require("express").Router();
+// const app = require("express").Router();
+const app = require("express").Router({ mergeParams: true });
 
 const {
   createTodo,
@@ -23,9 +24,17 @@ app.get("/", (req, res) => {
     });
   });
 });
-
+/*
 app.get("/new", (req, res) => {
   res.render("todos/new");
+});
+*/
+
+app.get("/new", (req, res) => {
+  // We enforce that it should be a number
+  const plan_id = parseInt(req.params.plan_id, 10);
+
+  res.render("todos/new", { plan_id });
 });
 
 /*
@@ -48,6 +57,7 @@ app.get("/:id", (req, res) => {
     POST 'http://localhost:8000/todos' \
     title='A Short Title' description='A short description.'
 */
+/*
 app.post("/", (req, res) => {
   createTodo(req).then(todos => {
     const todo = todos[0];
@@ -58,6 +68,20 @@ app.post("/", (req, res) => {
     });
   });
 });
+*/
+
+app.post("/", (req, res) => {
+  createTodo(req).then(todos => {
+    const todo = todos[0];
+    const { plan_id } = req.params;
+
+    res.format({
+      "text/html": () => res.redirect(`/plans/${plan_id}/todos/${todo.id}`),
+      "application/json": () => res.json(todo)
+    });
+  });
+});
+
 
 /*
   http --json \
