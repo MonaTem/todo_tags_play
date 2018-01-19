@@ -25,7 +25,15 @@ app.get("/", (req, res) => {
   });
 });
 
+/*
+
 app.get("/new", (req, res) => {
+});
+
+*/
+
+app.get("/new", (req, res) => {
+  res.render('todos/new');
 });
 
 /*
