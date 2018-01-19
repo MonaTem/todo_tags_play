@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Plans</title>
+  </head>
+  <body>
+    <h1>All Plans</h1>
+
+    <% plans.forEach((plan) => { %>
+      <div>
+        <a href="/plans/<%= plan.id %>"><h3><%= plan.title %></h3></a>
+      </div>
+    <% }) %>
+  </body>
+</html>

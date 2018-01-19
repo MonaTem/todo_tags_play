@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 // load routes
 const site = require('./routes/site');
+const plans = require('./routes/plans');
 const todos = require('./routes/todos');
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 // Add routes
 app.use('/', site);
+app.use('/plans', plans); // <--- Added
 app.use('/todos', todos);
 
 app.listen(PORT, () => {

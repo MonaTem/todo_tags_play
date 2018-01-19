@@ -1,9 +1,15 @@
-const app = require("express").Router();
-const knex = require("../db");
-
 /*
   RESTful todos
 */
+const app = require("express").Router();
+
+const {
+  createTodo,
+  findTodos,
+  findTodo,
+  updateTodo,
+  destroyTodo
+} = require("../models/todos");
 
 /*
   http --json \
@@ -12,14 +18,14 @@ const knex = require("../db");
 app.get("/", (req, res) => {
   findTodos(req).then(todos => {
     res.format({
-      'text/html': () =>  res.render('todos/index', { todos }),
-      'application/json': () => res.json(todos)
-    })
+      "text/html": () => res.render("todos/index", { todos }),
+      "application/json": () => res.json(todos)
+    });
   });
 });
 
 app.get("/new", (req, res) => {
-  res.render('todos/new');
+  res.render("todos/new");
 });
 
 /*
@@ -31,9 +37,9 @@ app.get("/:id", (req, res) => {
     const todo = todos[0];
 
     res.format({
-      'text/html': () =>  res.render('todos/show', { todo }),
-      'application/json': () => res.json(todo)
-    })
+      "text/html": () => res.render("todos/show", { todo }),
+      "application/json": () => res.json(todo)
+    });
   });
 });
 
@@ -43,13 +49,13 @@ app.get("/:id", (req, res) => {
     title='A Short Title' description='A short description.'
 */
 app.post("/", (req, res) => {
-  createTodo(req).then(todos =>{
+  createTodo(req).then(todos => {
     const todo = todos[0];
 
     res.format({
-      'text/html': () =>  res.redirect(`/todos/${todo.id}`),
-      'application/json': () => res.json(todo)
-    })
+      "text/html": () => res.redirect(`/todos/${todo.id}`),
+      "application/json": () => res.json(todo)
+    });
   });
 });
 
@@ -69,40 +75,5 @@ app.patch("/:id", (req, res) => {
 app.delete("/:id", (req, res) => {
   destroyTodo(req).then(() => res.sendStatus(204));
 });
-
-// CREATE A todo
-function createTodo({ body: { title, description } }) {
-  return knex("todos")
-    .returning("*")
-    .insert({ title, description });
-}
-
-// Find all
-function findTodos() {
-  return knex('todos');
-}
-
-// Find one
-function findTodo({params: { id }}) {
-  return knex('todos').where('id', id);
-}
-
-// Update
-function updateTodo({
-  params: { id },
-  body: { title, description },
-}) {
-  return knex('todos')
-    .where('id', id)
-    .returning('*')
-    .update({title, description});
-}
-
-// Destroy
-function destroyTodo({params: { id }}) {
-  return knex('todos')
-    .where('id', id)
-    .del();
-}
 
 module.exports = app;
