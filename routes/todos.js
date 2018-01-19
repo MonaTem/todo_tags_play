@@ -9,8 +9,20 @@ const knex = require("../db");
   http --json \
     GET 'http://localhost:8000/todos'
 */
+/*
 app.get("/", (req, res) => {
   findTodos(req).then(todos => res.json(todos));
+});
+*/
+
+
+app.get("/", (req, res) => {
+  findTodos(req).then(todos => {
+    res.format({
+      'text/html': () =>  res.render('todos/index', { todos }),
+      'application/json': () => res.json(todos)
+    })
+  });
 });
 
 app.get("/new", (req, res) => {
