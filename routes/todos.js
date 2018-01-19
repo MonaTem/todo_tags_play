@@ -25,6 +25,16 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/:id", (req, res) => {
+  findTodo(req).then(todos => {
+    const todo = todos[0];
+
+    res.format({
+      'text/html': () =>  res.render('todos/show', { todo }),
+      'application/json': () => res.json(todo)
+    })
+  });
+});
 /*
 
 app.get("/new", (req, res) => {
@@ -40,10 +50,11 @@ app.get("/new", (req, res) => {
   http --json \
     GET 'http://localhost:8000/todos/1'
 */
+/*
 app.get("/:id", (req, res) => {
   findTodo(req).then(todos => res.json(todos[0]));
 });
-
+*/
 /*
   http --json \
     POST 'http://localhost:8000/todos' \
