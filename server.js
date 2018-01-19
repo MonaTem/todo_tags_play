@@ -3,7 +3,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 // load routes
-const todos = require('./routes/todos'); // <--- ADDED
+const site = require('./routes/site'); // <--- ADDED
+const todos = require('./routes/todos');
 
 const app = express();
 const PORT = 8000;
@@ -16,7 +17,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // Add routes
-app.use('/todos', todos);  // <----- ADDED
+app.use('/', site);  // <----- ADDED
+app.use('/todos', todos);
 
 app.listen(PORT, () => {
   console.log('Server listening on ', PORT);
