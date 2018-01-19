@@ -25,6 +25,11 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/new", (req, res) => {
+  res.render('todos/new');
+});
+
+
 app.get("/:id", (req, res) => {
   findTodo(req).then(todos => {
     const todo = todos[0];
@@ -41,11 +46,17 @@ app.get("/new", (req, res) => {
 });
 
 */
+/*
 
 app.get("/new", (req, res) => {
   res.render('todos/new');
 });
-
+*/
+/*
+app.get("/new", (req, res) => {
+  res.render('todos/new');
+});
+*/
 /*
   http --json \
     GET 'http://localhost:8000/todos/1'
@@ -60,8 +71,21 @@ app.get("/:id", (req, res) => {
     POST 'http://localhost:8000/todos' \
     title='A Short Title' description='A short description.'
 */
+/*
 app.post("/", (req, res) => {
   createTodo(req).then(todos => res.json(todos[0]));
+});
+*/
+
+app.post("/", (req, res) => {
+  createTodo(req).then(todos =>{
+    const todo = todos[0];
+
+    res.format({
+      'text/html': () =>  res.redirect(`/todos/${todo.id}`),
+      'application/json': () => res.json(todo)
+    })
+  });
 });
 
 /*
