@@ -18,11 +18,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // Add routes
+app.use(express.static('public'))
 app.use('/', site);
-app.use('/plans', plans); // <--- Added
-app.use('/plans/:plan_id/todos', todos);
-
-// app.use('/todos', todos);
+app.use('/plans', plans);
+app.use('/plans/:plan_id/todos', todos);  // <--- Updated
 
 app.listen(PORT, () => {
   console.log('Server listening on ', PORT);
