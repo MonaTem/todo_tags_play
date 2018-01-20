@@ -43,9 +43,6 @@ function extractFormEntries(form) {
   return new FormData(form).entries();
 }
 
-
-
-
 function renderTodos(selector) {
   const container = document.querySelector(selector);
   const PLAN_ID = planId();
@@ -76,19 +73,7 @@ function fetchTodos(planId) {
     headers: { 'Accept': 'application/json' },
   }).then(res => res.json());
 }
-/*
-function templateTodos(todos) {
-  return todos.map(todo => createEl(
-    'div', {
-      className: 'todo-item',
-      children: [
-        createEl('h3', { text: todo.title }),
-        createEl('p', { text: todo.description })
-      ]
-    }
-  ));
-}
-*/
+
 function templateTodos(todos) {
   return todos.map(todo => {
     const todoEl = createEl(
@@ -110,32 +95,31 @@ function templateTodos(todos) {
     return todoEl;
   });
 }
+
+function deleteTodo({id}, todoEl) {
+  fetch(`/plans/${planId()}/todos/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-type': 'application/json',
+    }
+  }).then(() => todoEl.remove())
+}
+
 /*
   createEl is a simple function to assist in creating DOM elements
 
   @param tagName the name of the tag to create
   @param options an object of class, text, or children
 */
-/*
-function createEl(tagName, { className = '', text = '', children = []} ) {
-  const el = document.createElement(tagName);
-
-  el.appendChild(document.createTextNode(text));
-  el.setAttribute('class', className);
-  children.forEach(child => el.appendChild(child));
-
-  return el;
-}
-*/
 function createEl(tagName, {
   className = '',
   text = '',
   children = [],
-  on = {}  // THIS IS NEW
+  on = {}
 }) {
   const el = document.createElement(tagName);
 
-  // We iterate through event names and attach their handlers
   Object
     .entries(on)
     .forEach(([event, handler]) => el.addEventListener(event, handler))
@@ -145,14 +129,4 @@ function createEl(tagName, {
   children.forEach(child => el.appendChild(child));
 
   return el;
-}
-
-function deleteTodo(todo, todoEl) {
-  fetch(`/plans/${planId()}/todos/${todo.id}`, {
-    method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-      'Content-type': 'application/json',
-    }
-  }).then(() => todoEl.remove())
 }
