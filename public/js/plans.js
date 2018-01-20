@@ -76,7 +76,7 @@ function fetchTodos(planId) {
     headers: { 'Accept': 'application/json' },
   }).then(res => res.json());
 }
-
+/*
 function templateTodos(todos) {
   return todos.map(todo => createEl(
     'div', {
@@ -88,13 +88,35 @@ function templateTodos(todos) {
     }
   ));
 }
+*/
+function templateTodos(todos) {
+  return todos.map(todo => {
+    const todoEl = createEl(
+      'div', {
+        className: 'todo-item',
+        children: [
+          createEl('h3', { text: todo.title }),
+          createEl('p', { text: todo.description }),
+          createEl('button', {
+            className: 'delete-btn',
+            text: 'delete',
+            on: {
+              click: (e) => deleteTodo(todo, todoEl),
+            }
+          }),
+        ]
+    });
 
+    return todoEl;
+  });
+}
 /*
   createEl is a simple function to assist in creating DOM elements
 
   @param tagName the name of the tag to create
   @param options an object of class, text, or children
 */
+/*
 function createEl(tagName, { className = '', text = '', children = []} ) {
   const el = document.createElement(tagName);
 
@@ -103,4 +125,34 @@ function createEl(tagName, { className = '', text = '', children = []} ) {
   children.forEach(child => el.appendChild(child));
 
   return el;
+}
+*/
+function createEl(tagName, {
+  className = '',
+  text = '',
+  children = [],
+  on = {}  // THIS IS NEW
+}) {
+  const el = document.createElement(tagName);
+
+  // We iterate through event names and attach their handlers
+  Object
+    .entries(on)
+    .forEach(([event, handler]) => el.addEventListener(event, handler))
+
+  el.appendChild(document.createTextNode(text));
+  el.setAttribute('class', className);
+  children.forEach(child => el.appendChild(child));
+
+  return el;
+}
+
+function deleteTodo(todo, todoEl) {
+  fetch(`/plans/${planId()}/todos/${todo.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-type': 'application/json',
+    }
+  }).then(() => todoEl.remove())
 }
