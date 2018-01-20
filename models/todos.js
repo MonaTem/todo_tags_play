@@ -17,8 +17,13 @@ function createTodo({params: { plan_id }, body: { title, description } }) {
 
 
 // Find all
-function findTodos() {
-  return knex("todos");
+// function findTodos() {
+  // return knex("todos");
+// }
+
+// Find all
+function findTodos({params: {plan_id}}) {
+  return knex("todos").where({plan_id});
 }
 
 // Find one

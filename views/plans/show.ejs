@@ -13,12 +13,23 @@
       </div>
     </div>
 
+    <form id="todoForm">
+      <div>
+        <input type="text" name="title"/>
+      </div>
+      <div>
+        <textarea name="description"></textarea>
+      </div>
+
+      <button type="submit">Save Todo</button>
+    </form>
+
     <div id="todos"></div>
   </body>
   <script src="/js/plans.js" charset="utf-8"></script>
 
-  <!-- Calls our rendering script on the frontend  -->
   <script type="text/javascript">
     renderTodos('#todos');
+    handleSubmit('#todoForm', '#todos');
   </script>
 </html>

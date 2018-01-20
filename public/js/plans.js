@@ -1,3 +1,51 @@
+function handleSubmit(selector, todosCon) {
+  const form = document.querySelector(selector);
+  const container = document.querySelector(todosCon);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    createAndAppend(form, container);
+  });
+}
+
+function createAndAppend(form, container) {
+  const newTodo = entriesToObject(extractFormEntries(form));
+
+  createTodo(planId(), newTodo)
+    .then(todo => templateTodos([todo])[0])
+    .then(todo => container.appendChild(todo))
+    .then(() => form.reset())
+}
+
+function createTodo(plan_id, data) {
+  return fetch(`/plans/${plan_id}/todos`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }).then(res => res.json());
+}
+
+function entriesToObject(entries) {
+  const obj = {};
+
+  for (let [key, value] of entries) {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function extractFormEntries(form) {
+  return new FormData(form).entries();
+}
+
+
+
+
 function renderTodos(selector) {
   const container = document.querySelector(selector);
   const PLAN_ID = planId();
